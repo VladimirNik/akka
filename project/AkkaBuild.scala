@@ -31,6 +31,11 @@ import scalabuff.ScalaBuffPlugin._
 import com.typesafe.sbt.S3Plugin.{ S3, s3Settings }
 
 object AkkaBuild extends Build {
+
+  //autoCompilerPlugins := true
+  //libraryDependencies += compilerPlugin("test.org" %% "printplugin" % "1.0")
+  //scalacOptions += "-P:printplugin:oversrc"
+
   System.setProperty("akka.mode", "test") // Is there better place for this?
 
   // Load system properties from a file to make configuration from Jenkins easier
@@ -51,6 +56,9 @@ object AkkaBuild extends Build {
   lazy val akka = Project(
     id = "akka",
     base = file("."),
+    //autoCompilerPlugins in ThisBuild := true,
+    //libraryDependencies in ThisBuild += compilerPlugin("test.org" %% "printplugin" % "1.0"),
+    //scalacOptions in ThisBuild += "-P:printplugin:oversrc",
     settings = parentSettings ++ Release.settings ++ Unidoc.settings ++ Publish.versionSettings ++
       SphinxSupport.settings ++ Dist.settings ++ s3Settings ++ mimaSettings ++ unidocScaladocSettings ++ 
       inConfig(JavaDoc)(Defaults.configSettings) ++ Seq(
@@ -60,6 +68,9 @@ object AkkaBuild extends Build {
       unidocExclude := Seq(samples.id, channelsTests.id, remoteTests.id, akkaSbtPlugin.id),
       sources in JavaDoc <<= junidocSources,
       javacOptions in JavaDoc := Seq(),
+      autoCompilerPlugins in ThisBuild := true,
+      libraryDependencies in ThisBuild += compilerPlugin("test.org" % "printplugin_2.10" % "1.0"),
+      scalacOptions in ThisBuild += "-P:printplugin:oversrc",
       artifactName in packageDoc in JavaDoc := ((sv, mod, art) => "" + mod.name + "_" + sv.binary + "-" + mod.revision + "-javadoc.jar"),
       packageDoc in Compile <<= packageDoc in JavaDoc,
       Dist.distExclude := Seq(actorTests.id, akkaSbtPlugin.id, docs.id, samples.id, osgi.id, osgiAries.id, channelsTests.id),
