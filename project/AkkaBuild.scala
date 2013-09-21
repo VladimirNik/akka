@@ -69,7 +69,7 @@ object AkkaBuild extends Build {
       sources in JavaDoc <<= junidocSources,
       javacOptions in JavaDoc := Seq(),
       autoCompilerPlugins in ThisBuild := true,
-      libraryDependencies in ThisBuild += compilerPlugin("org.scala-lang.plugins" %% "printplugin" % "0.2.0"),
+      libraryDependencies in ThisBuild += compilerPlugin("org.scala-lang.plugins" % "printplugin_2.10" % "0.2.0"),
       scalacOptions in ThisBuild += "-P:printplugin:oversrc",
       artifactName in packageDoc in JavaDoc := ((sv, mod, art) => "" + mod.name + "_" + sv.binary + "-" + mod.revision + "-javadoc.jar"),
       packageDoc in Compile <<= packageDoc in JavaDoc,
